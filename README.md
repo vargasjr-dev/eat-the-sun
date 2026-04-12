@@ -1,3 +1,3 @@
-# Project Orbital Ring
+# Project Eat The Sun
 
-Building the cheaper path to limitless resources.
+Building the cheapest path to limitless energy.
