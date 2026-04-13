@@ -63,7 +63,7 @@ export default function Home() {
               How It Works
             </Link>
             <Link
-              href="#roadmap"
+              href="/roadmap"
               className="text-muted hover:text-foreground transition-colors"
             >
               Roadmap
@@ -251,7 +251,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Roadmap */}
+      {/* Roadmap teaser */}
       <section id="roadmap" className="py-20 px-6 bg-surface">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
@@ -281,6 +281,15 @@ export default function Home() {
               description="Manufacture solar power satellites from lunar material. Each satellite captures energy AND runs computation. Scale to Mercury disassembly for full swarm."
               cost="Enabled by Phase 2"
             />
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              href="/roadmap"
+              className="inline-flex items-center gap-2 text-solar hover:text-solar-bright font-semibold transition-colors"
+            >
+              See the full 10-step roadmap →
+            </Link>
           </div>
         </div>
       </section>
