@@ -75,6 +75,12 @@ export default function Home() {
               Research
             </Link>
             <Link
+              href="/simulations"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Simulations
+            </Link>
+            <Link
               href="https://github.com/vargasjr-dev/eat-the-sun"
               className="text-muted hover:text-foreground transition-colors"
               target="_blank"
@@ -297,9 +303,9 @@ export default function Home() {
       {/* Thermal proof teaser */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 text-solar font-mono text-sm mb-4">
-            <span className="w-1.5 h-1.5 bg-solar rounded-full" />
-            INTERACTIVE PROOF — COMING SOON
+          <div className="inline-flex items-center gap-2 text-green-400 font-mono text-sm mb-4">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+            INTERACTIVE PROOF — LIVE
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Does it melt?
@@ -310,9 +316,12 @@ export default function Home() {
             temperature is -10°C in solar minimum — colder than a winter day in
             New York. Explore the thermal model yourself.
           </p>
-          <div className="bg-surface border border-border rounded-xl p-12 text-muted">
-            Interactive thermal equilibrium simulation — coming soon
-          </div>
+          <Link
+            href="/simulations/thermal-equilibrium"
+            className="inline-flex items-center gap-2 bg-solar hover:bg-solar-bright text-background font-semibold px-8 py-3 rounded-lg transition-colors"
+          >
+            Launch Simulation →
+          </Link>
         </div>
       </section>
 

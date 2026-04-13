@@ -30,6 +30,7 @@ function StepCard({
   owner,
   status,
   detail,
+  href,
 }: {
   number: number;
   title: string;
@@ -37,6 +38,7 @@ function StepCard({
   owner: string;
   status: StepStatus;
   detail?: string;
+  href?: string;
 }) {
   const statusStyles: Record<StepStatus, { dot: string; border: string; badge: string; label: string }> = {
     done: {
@@ -87,7 +89,17 @@ function StepCard({
               {detail}
             </p>
           )}
-          <div className="text-xs text-muted font-mono">{owner}</div>
+          <div className="flex items-center justify-between">
+            <div className="text-xs text-muted font-mono">{owner}</div>
+            {href && (
+              <Link
+                href={href}
+                className="text-xs text-solar hover:text-solar-bright font-medium transition-colors"
+              >
+                View →
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -139,6 +151,12 @@ export default function RoadmapPage() {
               Research
             </Link>
             <Link
+              href="/simulations"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Simulations
+            </Link>
+            <Link
               href="https://github.com/vargasjr-dev/eat-the-sun"
               className="text-muted hover:text-foreground transition-colors"
               target="_blank"
@@ -174,7 +192,8 @@ export default function RoadmapPage() {
             description="The 'does it melt?' demo. Drag a slider to change altitude, watch the equilibrium temperature update in real time. At 100 km, it's -10°C. Colder than a New York winter."
             detail="Core physics: drag heating (½ρv³C_d·d) vs radiative cooling (εσT⁴·πd). Simple model, devastating result. This is a 30-second pitch moment in a URL."
             owner="VargasJR — Engineering"
-            status="active"
+            status="done"
+            href="/simulations/thermal-equilibrium"
           />
           <StepCard
             number={2}
