@@ -33,4 +33,4 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Authors
 
-Seethepalli, V. · Seethepalli, S. · JR, V. · Fuertes, V.
+Velissa Seethepalli · Sidd Seethepalli · Vargas JR · Vargas Fuertes

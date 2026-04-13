@@ -1,27 +1,52 @@
 import Link from "next/link";
+import fs from "fs";
+import path from "path";
 
 export const metadata = {
   title: "Research — Eat The Sun",
-  description: "Published research on orbital ring construction and incremental bootstrap architecture.",
+  description:
+    "Published research on orbital ring construction and incremental bootstrap architecture.",
 };
 
-function PaperCard({
-  title,
-  authors,
-  date,
-  version,
-  abstract,
-  href,
-  status,
-}: {
+interface PaperMeta {
+  slug: string;
   title: string;
   authors: string;
   date: string;
   version: string;
   abstract: string;
-  href: string;
   status: "published" | "draft" | "upcoming";
-}) {
+}
+
+function extractPaperMeta(filename: string, content: string): PaperMeta {
+  const slug = filename.replace(/\.md$/, "").replace(/^\d{8}-/, "");
+
+  const titleMatch = content.match(/^#\s+(.+)/m);
+  const title = titleMatch ? titleMatch[1] : filename;
+
+  const authorsMatch = content.match(/^\*\*(.+?)\*\*/m);
+  const authors = authorsMatch ? authorsMatch[1] : "";
+
+  const versionMatch = content.match(/Draft (v[\d.]+)/);
+  const version = versionMatch ? versionMatch[1] : "";
+
+  const dateMatch = content.match(
+    /(?:Draft v[\d.]+ — |^\*.*?— )(.+?)(?:\s*$|\*)/m
+  );
+  const date = dateMatch ? dateMatch[1].replace(/\*/g, "").trim() : "";
+
+  // Extract abstract: text between "## Abstract" and the next "##"
+  const abstractMatch = content.match(
+    /## Abstract\s*\n+([\s\S]*?)(?=\n## |\n---)/
+  );
+  const abstract = abstractMatch
+    ? abstractMatch[1].trim().slice(0, 400) + (abstractMatch[1].length > 400 ? "..." : "")
+    : "";
+
+  return { slug, title, authors, date, version, abstract, status: "draft" };
+}
+
+function PaperCard({ paper }: { paper: PaperMeta }) {
   const statusColors = {
     published: "bg-green-500/10 text-green-400 border-green-500/20",
     draft: "bg-solar/10 text-solar border-solar/20",
@@ -30,29 +55,55 @@ function PaperCard({
 
   return (
     <Link
-      href={href}
+      href={`/research/${paper.slug}`}
       className="block bg-surface border border-border rounded-xl p-8 hover:border-solar/30 transition-colors group"
     >
       <div className="flex items-center gap-3 mb-4">
         <span
-          className={`text-xs font-mono px-2.5 py-1 rounded-full border ${statusColors[status]}`}
+          className={`text-xs font-mono px-2.5 py-1 rounded-full border ${statusColors[paper.status]}`}
         >
-          {status === "published" ? "Published" : status === "draft" ? "Draft" : "Upcoming"}
+          {paper.status === "published"
+            ? "Published"
+            : paper.status === "draft"
+              ? "Draft"
+              : "Upcoming"}
         </span>
-        <span className="text-muted text-sm">{version}</span>
-        <span className="text-muted text-sm">·</span>
-        <span className="text-muted text-sm">{date}</span>
+        {paper.version && (
+          <span className="text-muted text-sm">{paper.version}</span>
+        )}
+        {paper.date && (
+          <>
+            <span className="text-muted text-sm">·</span>
+            <span className="text-muted text-sm">{paper.date}</span>
+          </>
+        )}
       </div>
       <h2 className="text-xl font-bold mb-2 group-hover:text-solar transition-colors">
-        {title}
+        {paper.title}
       </h2>
-      <p className="text-muted text-sm mb-4">{authors}</p>
-      <p className="text-muted text-sm leading-relaxed">{abstract}</p>
+      {paper.authors && (
+        <p className="text-muted text-sm mb-4">{paper.authors}</p>
+      )}
+      {paper.abstract && (
+        <p className="text-muted text-sm leading-relaxed">{paper.abstract}</p>
+      )}
     </Link>
   );
 }
 
 export default function ResearchPage() {
+  const researchDir = path.join(process.cwd(), "research");
+  const files = fs
+    .readdirSync(researchDir)
+    .filter((f) => f.endsWith(".md"))
+    .sort()
+    .reverse(); // newest first by date prefix
+
+  const papers = files.map((file) => {
+    const content = fs.readFileSync(path.join(researchDir, file), "utf-8");
+    return extractPaperMeta(file, content);
+  });
+
   return (
     <main className="pt-24 pb-20 px-6">
       {/* Nav */}
@@ -84,10 +135,7 @@ export default function ResearchPage() {
             >
               Roadmap
             </Link>
-            <Link
-              href="/research"
-              className="text-foreground font-medium"
-            >
+            <Link href="/research" className="text-foreground font-medium">
               Research
             </Link>
             <Link
@@ -109,15 +157,9 @@ export default function ResearchPage() {
         </p>
 
         <div className="space-y-6">
-          <PaperCard
-            title="Incremental Bootstrap Architecture for an Orbital Ring via Tethered Material Transport"
-            authors="Seethepalli, V. · Seethepalli, S. · JR, V. · Fuertes, V."
-            date="April 12, 2026"
-            version="v1.2"
-            abstract="We propose a novel incremental bootstrap architecture for constructing an orbital ring around Earth, using high-tensile fiber tethers suspended from the ring's magnetically levitated stationary platforms to mechanically transport construction material from the surface. Unlike previous proposals that assume full-scale construction, our approach begins with a minimum viable ring and scales incrementally through a self-reinforcing material transport loop."
-            href="/research/incremental-bootstrap-architecture"
-            status="draft"
-          />
+          {papers.map((paper) => (
+            <PaperCard key={paper.slug} paper={paper} />
+          ))}
         </div>
       </div>
     </main>

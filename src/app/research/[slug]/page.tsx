@@ -1,19 +1,81 @@
 import Link from "next/link";
 import fs from "fs";
 import path from "path";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title:
-    "Incremental Bootstrap Architecture for an Orbital Ring — Eat The Sun",
-  description:
-    "White paper proposing an incremental bootstrap approach to orbital ring construction using tethered material transport from a minimum viable $2M seed ring.",
+type Props = {
+  params: Promise<{ slug: string }>;
 };
+
+function findPaperFile(slug: string): string | null {
+  const researchDir = path.join(process.cwd(), "research");
+  const files = fs.readdirSync(researchDir).filter((f) => f.endsWith(".md"));
+
+  // Match slug against filename with or without date prefix
+  for (const file of files) {
+    const withoutExt = file.replace(/\.md$/, "");
+    // Strip yyyymmdd- prefix for matching
+    const withoutDate = withoutExt.replace(/^\d{8}-/, "");
+    if (withoutDate === slug || withoutExt === slug) {
+      return path.join(researchDir, file);
+    }
+  }
+  return null;
+}
+
+function extractTitle(content: string): string {
+  const match = content.match(/^#\s+(.+)/m);
+  return match ? match[1] : "Research Paper";
+}
+
+function extractAuthors(content: string): string {
+  const match = content.match(/^\*\*(.+?)\*\*/m);
+  return match ? match[1] : "";
+}
+
+function extractMeta(
+  content: string
+): { version: string; date: string } {
+  const versionMatch = content.match(/Draft (v[\d.]+)/);
+  const dateMatch = content.match(
+    /(?:Draft v[\d.]+ — |^\*.*?— )(.+?)(?:\s*$|\*)/m
+  );
+  return {
+    version: versionMatch ? versionMatch[1] : "",
+    date: dateMatch ? dateMatch[1].replace(/\*/g, "").trim() : "",
+  };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const filePath = findPaperFile(slug);
+  if (!filePath) return { title: "Not Found — Eat The Sun" };
+
+  const content = fs.readFileSync(filePath, "utf-8");
+  const title = extractTitle(content);
+  return {
+    title: `${title} — Eat The Sun`,
+    description: `Research paper: ${title}`,
+  };
+}
+
+export async function generateStaticParams() {
+  const researchDir = path.join(process.cwd(), "research");
+  const files = fs.readdirSync(researchDir).filter((f) => f.endsWith(".md"));
+  return files.map((file) => ({
+    slug: file.replace(/\.md$/, "").replace(/^\d{8}-/, ""),
+  }));
+}
 
 function parseMarkdownToSections(content: string) {
   const lines = content.split("\n");
   const sections: { level: number; title: string; content: string }[] = [];
-  let currentSection: { level: number; title: string; content: string } | null =
-    null;
+  let currentSection: {
+    level: number;
+    title: string;
+    content: string;
+  } | null = null;
 
   // Skip the title and author block (before first ---)
   let pastFrontmatter = false;
@@ -130,13 +192,19 @@ function renderContent(content: string) {
         i++;
       }
       elements.push(
-        <ul key={`list-${i}`} className="list-disc list-inside space-y-1 my-4 text-muted">
+        <ul
+          key={`list-${i}`}
+          className="list-disc list-inside space-y-1 my-4 text-muted"
+        >
           {items.map((item, j) => (
             <li
               key={j}
               dangerouslySetInnerHTML={{
                 __html: item
-                  .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>')
+                  .replace(
+                    /\*\*(.*?)\*\*/g,
+                    '<strong class="text-foreground">$1</strong>'
+                  )
                   .replace(/\*(.*?)\*/g, "<em>$1</em>"),
               }}
             />
@@ -154,13 +222,19 @@ function renderContent(content: string) {
         i++;
       }
       elements.push(
-        <ol key={`ol-${i}`} className="list-decimal list-inside space-y-1 my-4 text-muted">
+        <ol
+          key={`ol-${i}`}
+          className="list-decimal list-inside space-y-1 my-4 text-muted"
+        >
           {items.map((item, j) => (
             <li
               key={j}
               dangerouslySetInnerHTML={{
                 __html: item
-                  .replace(/\*\*(.*?)\*\*/g, '<strong class="text-foreground">$1</strong>')
+                  .replace(
+                    /\*\*(.*?)\*\*/g,
+                    '<strong class="text-foreground">$1</strong>'
+                  )
                   .replace(/\*(.*?)\*/g, "<em>$1</em>"),
               }}
             />
@@ -170,7 +244,7 @@ function renderContent(content: string) {
       continue;
     }
 
-    // Formula line (starts with $$, σ, P_, T_, or contains = with math-like content)
+    // Formula line
     if (
       line.match(/^\$\$/) ||
       line.match(/^(σ|P_|T_|θ)/) ||
@@ -215,13 +289,15 @@ function renderContent(content: string) {
   return elements;
 }
 
-export default function PaperPage() {
-  const filePath = path.join(
-    process.cwd(),
-    "research",
-    "incremental-bootstrap-architecture.md"
-  );
+export default async function PaperPage({ params }: Props) {
+  const { slug } = await params;
+  const filePath = findPaperFile(slug);
+  if (!filePath) notFound();
+
   const content = fs.readFileSync(filePath, "utf-8");
+  const title = extractTitle(content);
+  const authors = extractAuthors(content);
+  const { version, date } = extractMeta(content);
   const sections = parseMarkdownToSections(content);
 
   return (
@@ -267,17 +343,20 @@ export default function PaperPage() {
             <span className="text-xs font-mono px-2.5 py-1 rounded-full border bg-solar/10 text-solar border-solar/20">
               Draft
             </span>
-            <span className="text-muted text-sm">v1.2</span>
-            <span className="text-muted text-sm">·</span>
-            <span className="text-muted text-sm">April 12, 2026</span>
+            {version && (
+              <span className="text-muted text-sm">{version}</span>
+            )}
+            {date && (
+              <>
+                <span className="text-muted text-sm">·</span>
+                <span className="text-muted text-sm">{date}</span>
+              </>
+            )}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-            Incremental Bootstrap Architecture for an Orbital Ring via Tethered
-            Material Transport
+            {title}
           </h1>
-          <p className="text-muted">
-            Seethepalli, V. · Seethepalli, S. · JR, V. · Fuertes, V.
-          </p>
+          {authors && <p className="text-muted">{authors}</p>}
         </div>
 
         {/* Table of contents */}
@@ -317,7 +396,9 @@ export default function PaperPage() {
               className="mb-12"
             >
               {section.level === 1 && (
-                <h2 className="text-2xl font-bold mb-4 pt-4">{section.title}</h2>
+                <h2 className="text-2xl font-bold mb-4 pt-4">
+                  {section.title}
+                </h2>
               )}
               {section.level === 2 && (
                 <h3 className="text-xl font-bold mb-3 pt-2 text-solar/90">
