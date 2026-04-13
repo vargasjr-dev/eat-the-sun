@@ -130,7 +130,7 @@ export default function ResearchPage() {
               How It Works
             </Link>
             <Link
-              href="/#roadmap"
+              href="/roadmap"
               className="text-muted hover:text-foreground transition-colors"
             >
               Roadmap
