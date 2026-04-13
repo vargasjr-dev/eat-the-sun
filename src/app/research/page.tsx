@@ -139,6 +139,12 @@ export default function ResearchPage() {
               Research
             </Link>
             <Link
+              href="/simulations"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Simulations
+            </Link>
+            <Link
               href="https://github.com/vargasjr-dev/eat-the-sun"
               className="text-muted hover:text-foreground transition-colors"
               target="_blank"
