@@ -95,6 +95,12 @@ export default function SimulationsPage() {
               Roadmap
             </Link>
             <Link
+              href="/build"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Build
+            </Link>
+            <Link
               href="/research"
               className="text-muted hover:text-foreground transition-colors"
             >

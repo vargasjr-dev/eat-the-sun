@@ -69,6 +69,12 @@ export default function Home() {
               Roadmap
             </Link>
             <Link
+              href="/build"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Build
+            </Link>
+            <Link
               href="/research"
               className="text-muted hover:text-foreground transition-colors"
             >
@@ -295,6 +301,12 @@ export default function Home() {
               className="inline-flex items-center gap-2 text-solar hover:text-solar-bright font-semibold transition-colors"
             >
               See the full 10-step roadmap →
+            </Link>
+            <Link
+              href="/build"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Build
             </Link>
           </div>
         </div>
