@@ -135,6 +135,12 @@ export default function ResearchPage() {
             >
               Roadmap
             </Link>
+            <Link
+              href="/build"
+              className="text-muted hover:text-foreground transition-colors"
+            >
+              Build
+            </Link>
             <Link href="/research" className="text-foreground font-medium">
               Research
             </Link>
