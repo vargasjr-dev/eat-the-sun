@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Nav from "@/components/Nav";
 
 function SolarIcon({ className }: { className?: string }) {
   return (
@@ -47,55 +48,8 @@ function PhaseCard({
 
 export default function Home() {
   return (
-    <main className="flex flex-col">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <SolarIcon className="w-5 h-5 text-solar" />
-            <span>Eat The Sun</span>
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <Link
-              href="#how-it-works"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              How It Works
-            </Link>
-            <Link
-              href="/roadmap"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Roadmap
-            </Link>
-            <Link
-              href="/build"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Build
-            </Link>
-            <Link
-              href="/research"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Research
-            </Link>
-            <Link
-              href="/simulations"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Simulations
-            </Link>
-            <Link
-              href="https://github.com/vargasjr-dev/eat-the-sun"
-              className="text-muted hover:text-foreground transition-colors"
-              target="_blank"
-            >
-              GitHub
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <><Nav />
+      <main className="flex flex-col">
 
       {/* Hero */}
       <section className="pt-32 pb-20 px-6">
@@ -382,5 +336,6 @@ export default function Home() {
         </div>
       </footer>
     </main>
+    </>
   );
 }

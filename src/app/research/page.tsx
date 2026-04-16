@@ -1,6 +1,7 @@
 import Link from "next/link";
 import fs from "fs";
 import path from "path";
+import Nav from "@/components/Nav";
 
 export const metadata = {
   title: "Research — Eat The Sun",
@@ -105,61 +106,8 @@ export default function ResearchPage() {
   });
 
   return (
-    <main className="pt-24 pb-20 px-6">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              className="w-5 h-5 text-solar"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-            </svg>
-            <span>Eat The Sun</span>
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <Link
-              href="/#how-it-works"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              How It Works
-            </Link>
-            <Link
-              href="/roadmap"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Roadmap
-            </Link>
-            <Link
-              href="/build"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Build
-            </Link>
-            <Link href="/research" className="text-foreground font-medium">
-              Research
-            </Link>
-            <Link
-              href="/simulations"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Simulations
-            </Link>
-            <Link
-              href="https://github.com/vargasjr-dev/eat-the-sun"
-              className="text-muted hover:text-foreground transition-colors"
-              target="_blank"
-            >
-              GitHub
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <><Nav />
+      <main className="pt-24 pb-20 px-6">
 
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Research</h1>
@@ -175,5 +123,6 @@ export default function ResearchPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }
