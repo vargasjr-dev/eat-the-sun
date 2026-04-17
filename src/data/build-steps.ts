@@ -4,6 +4,10 @@ export interface SubStep {
   specs?: { label: string; value: string }[];
   status: "open" | "in-progress" | "resolved";
   answersQuestion?: string;
+  resolution?: {
+    summary: string;
+    rationale: string;
+  };
 }
 
 export interface BuildStep {
@@ -52,24 +56,47 @@ export const buildSteps: BuildStep[] = [
           { label: "Hoop stress requirement", value: "3.88 GPa minimum (1.5× safety factor)" },
         ],
         status: "resolved",
+        resolution: {
+          summary:
+            "Zylon (PBO) — 5.8 GPa, 1.56 g/cm³. Only fiber that clears the 3.88 GPa hoop stress requirement with safety margin.",
+          rationale:
+            "Dyneema SK99 (4.1 GPa, 0.97 g/cm³) has excellent specific strength but melts at 150°C — fatal for aerodynamic heating at 100 km. Carbon fiber T1000G (6.4 GPa, 1.80 g/cm³) beats Zylon on raw tensile but is brittle and can't be spliced reliably into a 40,000 km continuous loop. Kevlar 49 (3.6 GPa) and Vectran HT (3.2 GPa) both fall below the 3.88 GPa hoop stress minimum. Zylon's sole-source risk (Toyobo only) is real but accepted — no alternative material clears the physics.",
+        },
         answersQuestion:
           "What test facility has vacuum chambers large enough to simulate 100 km conditions on a cable segment?",
       },
       {
+        title: "Procure Zylon Test Fiber",
+        description:
+          "Source small-quantity Zylon (PBO) fiber for splice testing and prototype fabrication. This is a procurement step — get the material in hand before committing to lab time.\n\nZylon is available through Teijin Frontier USA (primary US distributor) and Avient/Fiber-Line in standard deniers (250, 500, 1000, 1500, 3000d). Hayami Industry Co. (Japan) explicitly accepts small-quantity trial orders of braided Zylon cord. For 50 splices on 1-5 m segments, total material is 50-250 m of fiber (~0.1-0.5 kg) — a trivial order at ~$100-200/kg retail.\n\nOrder both AS (standard modulus) and HM (high modulus) variants for comparison. HM has higher stiffness and lower creep but may behave differently under splice loading. Request the Toyobo technical data sheet with the order to confirm exact specs.",
+        specs: [
+          { label: "Material needed", value: "50-250 m Zylon (~0.1-0.5 kg)" },
+          { label: "Variants to order", value: "AS (standard modulus) + HM (high modulus)" },
+          { label: "Deniers available", value: "250, 500, 1000, 1500, 3000" },
+          { label: "US distributor", value: "Teijin Frontier USA" },
+          { label: "Alt. distributor", value: "Avient/Fiber-Line" },
+          { label: "Small-order supplier", value: "Hayami Industry Co. (Japan)" },
+          { label: "Estimated material cost", value: "$50-200" },
+          { label: "Lead time", value: "1-4 weeks" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What's the minimum prototype length needed to validate splice behavior under hoop stress?",
+      },
+      {
         title: "Splice Strength Testing",
         description:
-          "Fabricate 50 test splices using candidate methods (braided overlap, fusion, mechanical) on 1-5 m Zylon cable segments and load each to failure. Target: ≥95% of virgin fiber breaking strength. Document failure modes (splice slippage vs. fiber rupture) and establish minimum overlap length. This directly determines whether the 40,000 km cable is viable as a spliced assembly.\n\nSourcing fiber: Zylon is available through Teijin Frontier USA (primary US distributor) and Avient/Fiber-Line in standard deniers (250-3000d). Hayami Industry Co. (Japan) explicitly accepts small-quantity trial orders of braided Zylon cord. For 50 splices on 1-5 m segments, total material is 50-250 m of fiber (~0.1-0.5 kg) — a trivial order at ~$100-200/kg retail.\n\nTensile testing access: University materials labs are the most cost-effective path. Most engineering departments (mechanical, aerospace, civil) have universal testing machines (Instron, MTS) in the 10-100 kN range and rent lab time to external users at $50-200/hr. TestResources also offers direct machine rental. Target: a 100 kN UTM with fiber/yarn grips and an extensometer.\n\nBudget: Material cost is negligible (~$50-100). The real costs are lab time ($1K-3K for ~20 sessions), splice fabrication tooling (braiding jig, adhesives, fixtures — ~$500-1K), and failure documentation (high-speed camera rental ~$500-1K). A university partnership or makerspace with an Instron could cut costs significantly. Save $5K-8K for this step to have comfortable margin.",
+          "With Zylon fiber in hand, fabricate 50 test splices using candidate methods (braided overlap, fusion, mechanical) on 1-5 m cable segments and load each to failure. Target: ≥95% of virgin fiber breaking strength. Document failure modes (splice slippage vs. fiber rupture) and establish minimum overlap length. This directly determines whether the 40,000 km cable is viable as a spliced assembly.\n\nTensile testing access: University materials labs are the most cost-effective path. Most ME, aerospace, and civil engineering departments have universal testing machines (Instron, MTS) in the 10-100 kN range and rent lab time to external users at $50-200/hr. TestResources also offers direct machine rental. Target: a 100 kN UTM with fiber/yarn grips and an extensometer.\n\nBudget: The real costs are lab time ($1K-3K for ~20 sessions), splice fabrication tooling (braiding jig, adhesives, fixtures — $500-1K), and failure documentation (high-speed camera rental $500-1K). A university partnership or makerspace with an Instron could cut costs significantly. Save $5K-8K for this step.",
         specs: [
           { label: "Test samples", value: "50 splices across 3 methods" },
+          { label: "Splice methods", value: "Braided overlap, fusion, mechanical" },
           { label: "Target efficiency", value: "≥95% of virgin strength" },
           { label: "Test equipment", value: "Universal testing machine (100 kN) + yarn grips" },
-          { label: "Fiber source", value: "Teijin Frontier USA, Avient/Fiber-Line, or Hayami Industry" },
-          { label: "Material needed", value: "50-250 m Zylon (~0.1-0.5 kg, ~$50-100)" },
           { label: "Lab access", value: "University materials lab ($50-200/hr) or TestResources rental" },
           { label: "Failure documentation", value: "High-speed camera + strain gauge + extensometer" },
           { label: "Budget target", value: "$5K-8K (lab time + tooling + documentation)" },
         ],
-        status: "in-progress",
+        status: "open",
         answersQuestion:
           "What's the minimum prototype length needed to validate splice behavior under hoop stress?",
       },

@@ -101,7 +101,11 @@ export default async function BuildStepPage({
                 {step.subSteps.map((sub, i) => (
                   <div
                     key={i}
-                    className="bg-surface border border-border rounded-xl overflow-hidden"
+                    className={`bg-surface border rounded-xl overflow-hidden ${
+                      sub.status === "resolved"
+                        ? "border-green-500/30"
+                        : "border-border"
+                    }`}
                   >
                     <div className="px-5 py-4 border-b border-border/50">
                       <div className="flex items-center gap-3 mb-2">
@@ -129,10 +133,41 @@ export default async function BuildStepPage({
                       )}
                     </div>
 
+                    {/* Resolution banner for resolved steps */}
+                    {sub.status === "resolved" && sub.resolution && (
+                      <div className="px-5 py-4 bg-green-500/5 border-b border-border/50">
+                        <div className="flex items-start gap-2 mb-2">
+                          <span className="text-green-400 flex-shrink-0 mt-0.5">✓</span>
+                          <p className="text-sm font-medium text-green-300">
+                            {sub.resolution.summary}
+                          </p>
+                        </div>
+                        <details className="group ml-5">
+                          <summary className="text-xs text-muted cursor-pointer hover:text-foreground transition-colors select-none">
+                            Show rationale
+                          </summary>
+                          <p className="mt-2 text-xs text-muted leading-relaxed">
+                            {sub.resolution.rationale}
+                          </p>
+                        </details>
+                      </div>
+                    )}
+
                     <div className="px-5 py-4">
-                      <p className="text-muted text-sm leading-relaxed mb-4">
-                        {sub.description}
-                      </p>
+                      {sub.description.includes("\n\n") ? (
+                        sub.description.split("\n\n").map((para, k) => (
+                          <p
+                            key={k}
+                            className="text-muted text-sm leading-relaxed mb-4"
+                          >
+                            {para}
+                          </p>
+                        ))
+                      ) : (
+                        <p className="text-muted text-sm leading-relaxed mb-4">
+                          {sub.description}
+                        </p>
+                      )}
 
                       {sub.specs && sub.specs.length > 0 && (
                         <div className="bg-background border border-border/50 rounded-lg overflow-hidden">
