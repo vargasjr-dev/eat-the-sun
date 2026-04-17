@@ -19,6 +19,121 @@ export interface BuildStep {
 
 export const buildSteps: BuildStep[] = [
   {
+    step: 0,
+    slug: "prototype",
+    title: "Prototype & Validate",
+    location: "Ground + Stratosphere — Test Facilities",
+    description:
+      "Before committing $2-3M to a full-scale 40,000 km cable and a Starship launch, validate every critical assumption at small scale. Build short cable segments, test splicing under load, prove coatings survive atomic oxygen, and deploy a spool from altitude. This step is the engineering equivalent of staging before production — nothing goes to orbit until it works on the ground.",
+    specs: [
+      { label: "Prototype cable length", value: "1-10 km" },
+      { label: "Estimated prototype budget", value: "$50K-200K" },
+      { label: "Duration", value: "6-12 months" },
+      { label: "Test environments", value: "Ground, vacuum chamber, stratosphere" },
+      { label: "Success criteria", value: "All sub-steps pass before Step 1 begins" },
+    ],
+    openQuestions: [
+      "What test facility has vacuum chambers large enough to simulate 100 km conditions on a cable segment?",
+      "Can a sounding rocket or high-altitude balloon test spool deployment at relevant speeds?",
+      "What's the minimum prototype length needed to validate splice behavior under hoop stress?",
+      "Who are the aerospace testing partners (NASA, AFRL, commercial test labs) that could support this?",
+    ],
+    subSteps: [
+      {
+        title: "Material Trade Study",
+        description:
+          "Before defaulting to Zylon, conduct a rigorous comparison of all candidate rotor cable materials. The orbital ring rotor needs the highest possible specific strength (tensile strength ÷ density) to minimize mass at 8 km/s hoop stress. Zylon (PBO) leads at 5.8 GPa tensile / 1.56 g/cm³, but it's a sole-source material from Toyobo with known degradation issues (UV, moisture, atomic oxygen). Alternatives include carbon fiber (multiple manufacturers, 3.5-6.0 GPa, but brittle), Dyneema/UHMWPE (excellent UV resistance, but melts at ~150°C — fatal for aerodynamic heating), and Kevlar/aramid (heat-resistant but weaker at 3.0-3.6 GPa). The trade study must weigh tensile strength, thermal limits, environmental degradation, supply chain risk, and cost.",
+        specs: [
+          { label: "Zylon (PBO)", value: "5.8 GPa / 1.56 g/cm³ — Toyobo only" },
+          { label: "Carbon fiber (T1000G)", value: "6.4 GPa / 1.80 g/cm³ — multiple mfrs" },
+          { label: "Dyneema SK99", value: "4.1 GPa / 0.97 g/cm³ — melts at 150°C ❌" },
+          { label: "Kevlar 49", value: "3.6 GPa / 1.44 g/cm³ — weaker" },
+          { label: "Vectran HT", value: "3.2 GPa / 1.40 g/cm³ — good creep resistance" },
+          { label: "Hoop stress requirement", value: "3.88 GPa minimum (1.5× safety factor)" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What test facility has vacuum chambers large enough to simulate 100 km conditions on a cable segment?",
+      },
+      {
+        title: "Splice Strength Testing",
+        description:
+          "Fabricate 10-50 test splices using candidate methods (braided overlap, fusion, mechanical) on 1-5 m cable segments. Load each splice to failure on a tensile testing machine. Target: ≥95% of virgin fiber breaking strength. Document the failure mode (splice slippage vs. fiber rupture) and establish the minimum overlap length. This directly determines whether the 40,000 km cable is viable as a spliced assembly.",
+        specs: [
+          { label: "Test samples", value: "50+ splices across 3 methods" },
+          { label: "Target efficiency", value: "≥95% of virgin strength" },
+          { label: "Test equipment", value: "Universal tensile testing machine (100 kN)" },
+          { label: "Failure documentation", value: "High-speed camera + strain gauge" },
+          { label: "Estimated cost", value: "$5K-15K (material + lab time)" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What's the minimum prototype length needed to validate splice behavior under hoop stress?",
+      },
+      {
+        title: "Atomic Oxygen Exposure Testing",
+        description:
+          "Subject coated cable samples to atomic oxygen bombardment in a vacuum chamber, simulating conditions at 100 km altitude. Test at least three coating types: SiO₂ (CVD), Al₂O₃ (ALD), and aluminum foil sheath. Measure mass loss, tensile strength retention, and coating adhesion after simulated exposure equivalent to 1, 6, and 12 months. NASA Glenn Research Center and AFRL have ground-based AO exposure facilities (e.g., the MPAC&SEED or directed-beam AO sources).",
+        specs: [
+          { label: "Coatings to test", value: "SiO₂, Al₂O₃, Al foil, hybrid" },
+          { label: "Simulated exposure", value: "1, 6, and 12 months at 100 km AO flux" },
+          { label: "Measurements", value: "Mass loss, tensile retention, SEM imaging" },
+          { label: "Facilities", value: "NASA Glenn, AFRL, or commercial AO labs" },
+          { label: "Estimated cost", value: "$15K-50K" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What test facility has vacuum chambers large enough to simulate 100 km conditions on a cable segment?",
+      },
+      {
+        title: "Ground Tension Loop",
+        description:
+          "Build a 1-10 km closed cable loop on the ground, tensioned between anchor points or on a circular test track. Spin the loop at scaled tension to simulate hoop stress conditions. Run continuously for weeks to test fatigue, creep, splice durability under sustained load, and coating wear. This is the cheapest way to find failure modes before going to orbit. A desert test site, abandoned airstrip, or large warehouse could host the loop.",
+        specs: [
+          { label: "Loop length", value: "1-10 km" },
+          { label: "Cable mass", value: "0.5-5 kg" },
+          { label: "Test duration", value: "4-12 weeks continuous" },
+          { label: "Measurements", value: "Tension, creep, temperature, splice integrity" },
+          { label: "Estimated cost", value: "$10K-30K (infrastructure + instrumentation)" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What's the minimum prototype length needed to validate splice behavior under hoop stress?",
+      },
+      {
+        title: "Stratospheric Tether Test",
+        description:
+          "Loft a 1-5 km cable segment to 30-35 km altitude on a stratospheric balloon. Expose the cable to near-space conditions (low pressure, UV, thermal cycling between sunlight and shadow, partial atomic oxygen exposure) for 1-4 weeks. Monitor tensile strength telemetry in real-time. This bridges the gap between ground vacuum chamber tests and actual orbital deployment. Companies like World View, Aerostar, or Near Space Corporation offer stratospheric balloon platforms for payload testing.",
+        specs: [
+          { label: "Altitude", value: "30-35 km" },
+          { label: "Cable length", value: "1-5 km (suspended below balloon)" },
+          { label: "Duration", value: "1-4 weeks" },
+          { label: "Environment", value: "0.01 atm, UV, thermal cycling ±100°C" },
+          { label: "Balloon providers", value: "World View, Aerostar, Near Space Corp" },
+          { label: "Estimated cost", value: "$20K-80K (flight + instrumentation)" },
+        ],
+        status: "open",
+        answersQuestion:
+          "Can a sounding rocket or high-altitude balloon test spool deployment at relevant speeds?",
+      },
+      {
+        title: "Spool Deployment Test",
+        description:
+          "Test the spool unwinding mechanism at speed. Options: (1) ground-based high-speed unspool rig simulating orbital deployment rate, (2) sounding rocket carrying a small spool (100-500m of cable) that deploys during ascent/descent, (3) drop test from a high-altitude balloon. The goal is to prove the cable unspools cleanly without tangling, kinking, or uneven tension — failure modes that would be catastrophic at orbital scale. Document unspooling dynamics with onboard cameras and tension sensors.",
+        specs: [
+          { label: "Spool size (test)", value: "100-500 m cable" },
+          { label: "Deployment speed", value: "10-100 m/s (scaled)" },
+          { label: "Sounding rocket option", value: "~$15K-50K per flight" },
+          { label: "Ground rig option", value: "~$5K-20K" },
+          { label: "Instrumentation", value: "High-speed camera, tension load cells, IMU" },
+        ],
+        status: "open",
+        answersQuestion:
+          "Can a sounding rocket or high-altitude balloon test spool deployment at relevant speeds?",
+      },
+    ],
+  },
+  {
     step: 1,
     slug: "manufacture-rotor-cable",
     title: "Manufacture the Rotor Cable",
@@ -43,6 +158,23 @@ export const buildSteps: BuildStep[] = [
       "What coating or sheathing protects Zylon from atomic oxygen degradation at 100 km?",
     ],
     subSteps: [
+      {
+        title: "Vendor & Supply Chain Analysis",
+        description:
+          "Toyobo Co., Ltd. (now Toyobo MC Corporation) is the sole manufacturer of Zylon (PBO) fiber worldwide. There are no alternative PBO manufacturers — only distributors (Teijin Frontier USA, FibrXL in Europe, 3L Tex in China, Avient/Fiber-Line). This is a critical supply chain risk: a single-source dependency for the most important component of the entire orbital ring. The vendor analysis must map the full supply chain, identify Toyobo's capacity constraints, assess geopolitical risks (Japan-based sole source), and establish whether a second-source PBO manufacturer could be developed or licensed. SpaceX already uses Zylon for Crew Dragon parachute suspension lines — there may be an existing procurement relationship to leverage.",
+        specs: [
+          { label: "PBO manufacturer", value: "Toyobo MC Corp. (sole source)" },
+          { label: "US distributor", value: "Teijin Frontier USA" },
+          { label: "EU distributor", value: "FibrXL (Netherlands)" },
+          { label: "China distributor", value: "3L Tex Co., Ltd." },
+          { label: "Existing aerospace user", value: "SpaceX (Crew Dragon parachutes)" },
+          { label: "NASA usage", value: "Stratospheric superpressure balloons" },
+          { label: "Supply risk level", value: "Critical — no alternative manufacturer" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What's the actual per-kg cost at 20-tonne volume? Published figures suggest ~$100/kg but bulk pricing is unknown.",
+      },
       {
         title: "Fiber Production Feasibility",
         description:
