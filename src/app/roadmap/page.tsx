@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Nav from "@/components/Nav";
 
 export const metadata = {
   title: "Roadmap — Eat The Sun",
@@ -134,52 +135,8 @@ function LayerLabel({ children }: { children: React.ReactNode }) {
 
 export default function RoadmapPage() {
   return (
-    <main className="pt-24 pb-20 px-6">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <SolarIcon className="w-5 h-5 text-solar" />
-            <span>Eat The Sun</span>
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <Link
-              href="/#how-it-works"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              How It Works
-            </Link>
-            <Link href="/roadmap" className="text-foreground font-medium">
-              Roadmap
-            </Link>
-            <Link
-              href="/build"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Build
-            </Link>
-            <Link
-              href="/research"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Research
-            </Link>
-            <Link
-              href="/simulations"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              Simulations
-            </Link>
-            <Link
-              href="https://github.com/vargasjr-dev/eat-the-sun"
-              className="text-muted hover:text-foreground transition-colors"
-              target="_blank"
-            >
-              GitHub
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <><Nav />
+      <main className="pt-24 pb-20 px-6">
 
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
@@ -307,5 +264,6 @@ export default function RoadmapPage() {
         </div>
       </div>
     </main>
+    </>
   );
 }

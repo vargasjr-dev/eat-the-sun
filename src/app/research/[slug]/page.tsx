@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Nav from "@/components/Nav";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -301,40 +302,8 @@ export default async function PaperPage({ params }: Props) {
   const sections = parseMarkdownToSections(content);
 
   return (
-    <main className="pt-24 pb-20 px-6">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              className="w-5 h-5 text-solar"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-            </svg>
-            <span>Eat The Sun</span>
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <Link
-              href="/research"
-              className="text-muted hover:text-foreground transition-colors"
-            >
-              ← Research
-            </Link>
-            <Link
-              href="https://github.com/vargasjr-dev/eat-the-sun"
-              className="text-muted hover:text-foreground transition-colors"
-              target="_blank"
-            >
-              GitHub
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <><Nav />
+      <main className="pt-24 pb-20 px-6">
 
       <article className="max-w-3xl mx-auto">
         {/* Paper header */}
@@ -416,5 +385,6 @@ export default async function PaperPage({ params }: Props) {
         </div>
       </article>
     </main>
+    </>
   );
 }
