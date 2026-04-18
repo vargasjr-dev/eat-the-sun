@@ -146,9 +146,17 @@ export default async function BuildStepPage({
                           <summary className="text-xs text-muted cursor-pointer hover:text-foreground transition-colors select-none">
                             Show rationale
                           </summary>
-                          <p className="mt-2 text-xs text-muted leading-relaxed">
-                            {sub.resolution.rationale}
-                          </p>
+                          {sub.resolution.rationale.includes("\n\n") ? (
+                            sub.resolution.rationale.split("\n\n").map((para, k) => (
+                              <p key={k} className={`text-xs text-muted leading-relaxed ${k === 0 ? "mt-2" : "mt-3"}`}>
+                                {para}
+                              </p>
+                            ))
+                          ) : (
+                            <p className="mt-2 text-xs text-muted leading-relaxed">
+                              {sub.resolution.rationale}
+                            </p>
+                          )}
                         </details>
                       </div>
                     )}
