@@ -60,7 +60,7 @@ export const buildSteps: BuildStep[] = [
           summary:
             "Zylon (PBO) — 5.8 GPa, 1.56 g/cm³. Only fiber that clears the 3.88 GPa hoop stress requirement with safety margin.",
           rationale:
-            "Dyneema SK99 (4.1 GPa, 0.97 g/cm³) has excellent specific strength but melts at 150°C — fatal for aerodynamic heating at 100 km. Carbon fiber T1000G (6.4 GPa, 1.80 g/cm³) beats Zylon on raw tensile but is brittle and can't be spliced reliably into a 40,000 km continuous loop. Kevlar 49 (3.6 GPa) and Vectran HT (3.2 GPa) both fall below the 3.88 GPa hoop stress minimum. Zylon's sole-source risk (Toyobo only) is real but accepted — no alternative material clears the physics.",
+            "The rotor cable needs the highest possible specific strength (tensile strength ÷ density) to survive 8 km/s hoop stress. Minimum requirement: 3.88 GPa at 1.5× safety factor. Five candidates were evaluated:\n\nDyneema SK99 (4.1 GPa, 0.97 g/cm³) — Best specific strength due to ultra-low density, but melts at 150°C. At 100 km altitude, aerodynamic heating from residual atmosphere is fatal for a thermoplastic fiber. Eliminated on thermal limits.\n\nCarbon fiber T1000G (6.4 GPa, 1.80 g/cm³) — Highest raw tensile strength of any candidate. But carbon fiber is brittle and fractures under bending — it cannot be reliably spliced into a 40,000 km continuous loop assembled from thousands of shorter segments. Splice efficiency for brittle fibers is fundamentally limited. Eliminated on spliceability.\n\nKevlar 49 (3.6 GPa, 1.44 g/cm³) — Good thermal resistance (decomposes at 500°C) but falls below the 3.88 GPa minimum hoop stress requirement. Not strong enough. Eliminated on tensile strength.\n\nVectran HT (3.2 GPa, 1.40 g/cm³) — Excellent creep resistance and good UV tolerance, but the weakest candidate at 3.2 GPa. Well below the hoop stress minimum. Eliminated on tensile strength.\n\nZylon PBO (5.8 GPa, 1.56 g/cm³) — Clears the 3.88 GPa threshold with 1.49× margin. Known risks: sole-source manufacturing (Toyobo Co., Ltd., Japan only), UV sensitivity, moisture absorption, and atomic oxygen erosion at 100 km. These are engineering constraints to mitigate through coatings and supply chain strategy — not reasons to choose a weaker fiber. No other material clears the physics.",
         },
         answersQuestion:
           "What test facility has vacuum chambers large enough to simulate 100 km conditions on a cable segment?",
@@ -78,6 +78,22 @@ export const buildSteps: BuildStep[] = [
           { label: "Small-order supplier", value: "Hayami Industry Co. (Japan)" },
           { label: "Estimated material cost", value: "$50-200" },
           { label: "Lead time", value: "1-4 weeks" },
+        ],
+        status: "open",
+        answersQuestion:
+          "What's the minimum prototype length needed to validate splice behavior under hoop stress?",
+      },
+      {
+        title: "Build Splice Jig & Develop Technique",
+        description:
+          "Before running the formal 50-splice test matrix, build a controlled splice jig and develop hand technique for working with PBO fiber. Zylon's rigid molecular structure (higher stiffness than Dyneema or Kevlar) means standard rope splicing techniques may not transfer directly — the fiber handling and interleaving process needs to be learned and refined on actual material.\n\nThe jig is a simple fixture: a board with adjustable clamps to hold both fiber ends at controlled tension, graduated markings for consistent overlap lengths (10-50 cm), guide channels to keep filaments aligned during interleaving, and a small serving tool for wrapping binding thread at even tension. Total cost under $200 in hardware store parts.\n\nSuccess criteria: produce 5 consecutive splices with visually identical geometry — consistent overlap length, even filament distribution, uniform serving wrap — before advancing to formal tensile testing. This step also serves as an early filter: if PBO's stiffness makes braided overlap impractical at test scale, the formal test matrix should weight mechanical sleeve and adhesive bond methods more heavily.",
+        specs: [
+          { label: "Jig components", value: "Board, adjustable clamps, guide channels, serving tool" },
+          { label: "Estimated jig cost", value: "~$100-200" },
+          { label: "Practice splices before formal testing", value: "10-20" },
+          { label: "Parameters to dial in", value: "Overlap length, filament separation, serving tension, interleave pattern" },
+          { label: "Time estimate", value: "1-2 weeks" },
+          { label: "Success criteria", value: "5 consecutive visually identical splices" },
         ],
         status: "open",
         answersQuestion:
